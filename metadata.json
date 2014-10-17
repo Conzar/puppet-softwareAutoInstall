@@ -6,10 +6,9 @@
   "summary": "rtfm",
   "description": "rtfm",
   "license": "gpl-3.0",
-  "source": "https://github.com/sylmarien/softwareAutoInstall",
-  "project_page": "https://github.com/sylmarien/softwareAutoInstall",
-  "issues_url": "https://github.com/sylmarien/softwareAutoInstall/issues",
-  "forge_url": "https://forge.puppetlabs.com/softwareAutoInstall",
+  "source": "https://github.com/sylmarien/puppet-softwareAutoInstall",
+  "project_page": "https://github.com/sylmarien/puppet-softwareAutoInstall",
+  "issues_url": "https://github.com/sylmarien/puppet-softwareAutoInstall/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
@@ -19,10 +18,11 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "6",
-        "7"
-      ]
+      "operatingsystemrelease": [ "7.6" ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "7.0" ]
     }
   ],
   "tags": ["EasyBuild", " automatic", " installation"]
