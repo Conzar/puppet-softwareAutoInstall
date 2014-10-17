@@ -1,0 +1,29 @@
+{
+  "name": "softwareAutoInstall",
+  "version": "0.1.0",
+  "author": "M. Schmitt",
+  "mail": "maxime.schmitt@ext.uni.lu",
+  "summary": "rtfm",
+  "description": "rtfm",
+  "license": "gpl-3.0",
+  "source": "https://github.com/sylmarien/softwareAutoInstall",
+  "project_page": "https://github.com/sylmarien/softwareAutoInstall",
+  "issues_url": "https://github.com/sylmarien/softwareAutoInstall/issues",
+  "forge_url": "https://forge.puppetlabs.com/softwareAutoInstall",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "tags": ["EasyBuild", " automatic", " installation"]
+}
