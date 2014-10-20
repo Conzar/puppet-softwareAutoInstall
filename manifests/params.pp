@@ -76,7 +76,7 @@ class softwareautoinstall::params {
     }
 
     $PyYaml = $::operatingsystem ? {
-      'CentOS' => 'PyYaml',
+      'CentOS' => 'PyYAML',
       'Debian' => 'python-yaml',
     }
 
