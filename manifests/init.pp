@@ -110,7 +110,7 @@ class softwareAutoInstall::common {
         ],
       }
 
-      package { 'python-yaml':
+      package { "${softwareautoinstall::params::PyYaml}":
         ensure => installed,
       }
     }
