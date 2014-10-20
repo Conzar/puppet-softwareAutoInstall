@@ -51,6 +51,7 @@ if len(sys.argv) >= 2 and len(sys.argv) <= 3:
                         sys.stdout.write('Operation successful\n')
                     else:
                         sys.stdout.write('Operation failed with return code ' + out)
+                        exit(out)
                     break
 
         sys.stdout.write("Finishing EasyBuild software installation step.\n")
@@ -58,6 +59,8 @@ if len(sys.argv) >= 2 and len(sys.argv) <= 3:
     else:
         sys.stdout.write("Error: Invalid set of software, please use either core or experimental. (Instead of " + softwareSet  + ")\n")
         helper()
+        exit(20)
 else:
     sys.stdout.write("Error: Invalid number of arguments.\n")
     helper()
+    exit(10)
