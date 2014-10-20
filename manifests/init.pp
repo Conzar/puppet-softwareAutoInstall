@@ -40,9 +40,9 @@
 # [Remember: No empty lines between comments and class definition]
 #
 class softwareAutoInstall(
-    $ensure = $softwareAutoInstall::params::ensure,
+    $ensure = $softwareautoinstall::params::ensure,
     $branch = "core",
-    $EasyBuildVersion = ""
+    $easybuildversion = ""
 )
 inherits softwareAutoInstall::params
 {
@@ -70,21 +70,14 @@ inherits softwareAutoInstall::params
 class softwareAutoInstall::common {
 
     # Load the variables used in this module. Check the softwareAutoInstall-params.pp file
-    require softwareAutoInstall::params
+    require softwareautoinstall::params
 
-    package { 'softwareAutoInstall':
-        name    => "${softwareAutoInstall::params::packagename}",
-        ensure  => "${softwareAutoInstall::ensure}",
-    }
-    # package { $softwareAutoInstall::params::extra_packages:
-    #     ensure => 'present'
-    # }
     Exec { path => $easybuild::params::path }
 
-    if $softwareAutoInstall::ensure == 'present' {
+    if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
         user    => 'sw',
-        command => "bash -c 'cd /tmp && sh install.py ${softwareAutoInstall::branch} ${softwareAutoInstall::EasyBuildVersion} && rm -f install.py && rm -f softwares.yaml'",
+        command => "bash -c 'cd /tmp && sh install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
         umask   => '022',
         require => [ File [ 'install.py' ], File [ 'softwares.yaml' ] ],
       }
@@ -109,16 +102,16 @@ class softwareAutoInstall::common {
 
 
 # ------------------------------------------------------------------------------
-# = Class: softwareAutoInstall::debian
+# = Class: softwareautoinstall::debian
 #
 # Specialization class for Debian systems
-class softwareAutoInstall::debian inherits softwareAutoInstall::common { }
+class softwareautoinstall::debian inherits softwareautoinstall::common { }
 
 # ------------------------------------------------------------------------------
 # = Class: softwareAutoInstall::redhat
 #
 # Specialization class for Redhat systems
-class softwareAutoInstall::redhat inherits softwareAutoInstall::common { }
+class softwareautoinstall::redhat inherits softwareautoinstall::common { }
 
 
 

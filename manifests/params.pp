@@ -22,7 +22,7 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-class softwareAutoInstall::params {
+class softwareautoinstall::params {
 
     ######## DEFAULTS FOR VARIABLES USERS CAN SET ##########################
     # (Here are set the defaults, provide your custom variables externally)
@@ -30,25 +30,25 @@ class softwareAutoInstall::params {
     ###########################################
 
     # ensure the presence (or absence) of softwareAutoInstall
-    $ensure = $softwareAutoInstall_ensure ? {
+    $ensure = $softwareautoinstall_ensure ? {
         ''      => 'present',
-        default => "${softwareAutoInstall_ensure}"
+        default => "${softwareautoinstall_ensure}"
     }
 
     # The Protocol used. Used by monitor and firewall class. Default is 'tcp'
-    $protocol = $softwareAutoInstall_protocol ? {
+    $protocol = $softwareautoinstall_protocol ? {
         ''      => 'tcp',
-        default => "${softwareAutoInstall_protocol}",
+        default => "${softwareautoinstall_protocol}",
     }
     # The port number. Used by monitor and firewall class. The default is 22.
-    $port = $softwareAutoInstall_port ? {
+    $port = $softwareautoinstall_port ? {
         ''      => 22,
-        default => "${softwareAutoInstall_port}",
+        default => "${softwareautoinstall_port}",
     }
     # example of an array variable
-    $array_variable = $softwareAutoInstall_array_variable ? {
+    $array_variable = $softwareautoinstall_array_variable ? {
         ''      => [],
-        default => $softwareAutoInstall_array_variable,
+        default => $softwareautoinstall_array_variable,
     }
 
 
@@ -57,7 +57,7 @@ class softwareAutoInstall::params {
     #######################################
     # softwareAutoInstall packages
     $packagename = $::operatingsystem ? {
-        default => 'softwareAutoInstall',
+        default => 'softwareautoinstall',
     }
     # $extra_packages = $::operatingsystem ? {
     #     /(?i-mx:ubuntu|debian)/        => [],
@@ -67,7 +67,7 @@ class softwareAutoInstall::params {
 
     # Log directory
     $logdir = $::operatingsystem ? {
-        default => '/var/log/softwareAutoInstall'
+        default => '/var/log/softwareautoinstall'
     }
     $logdir_mode = $::operatingsystem ? {
         default => '750',
@@ -98,13 +98,13 @@ class softwareAutoInstall::params {
 
     # softwareAutoInstall associated services
     $servicename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'softwareAutoInstall',
-        default                 => 'softwareAutoInstall'
+        /(?i-mx:ubuntu|debian)/ => 'softwareautoinstall',
+        default                 => 'softwareautoinstall'
     }
     # used for pattern in a service ressource
     $processname = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'softwareAutoInstall',
-        default                 => 'softwareAutoInstall'
+        /(?i-mx:ubuntu|debian)/ => 'softwareautoinstall',
+        default                 => 'softwareautoinstall'
     }
     $hasstatus = $::operatingsystem ? {
         /(?i-mx:ubuntu|debian)/        => false,
@@ -130,11 +130,11 @@ class softwareAutoInstall::params {
     # }
 
     $configfile = $::operatingsystem ? {
-        default => '/etc/softwareAutoInstall.conf',
+        default => '/etc/softwareautoinstall.conf',
     }
     $configfile_init = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => '/etc/default/softwareAutoInstall',
-        default                 => '/etc/sysconfig/softwareAutoInstall'
+        /(?i-mx:ubuntu|debian)/ => '/etc/default/softwareautoinstall',
+        default                 => '/etc/sysconfig/softwareautoinstall'
     }
     $configfile_mode = $::operatingsystem ? {
         default => '0600',
