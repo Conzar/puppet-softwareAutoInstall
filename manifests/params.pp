@@ -75,6 +75,11 @@ class softwareautoinstall::params {
       'Debian' => '/usr/share/?odules/init/bash',
     }
 
+    $PyYaml = $::operatingsystem ? {
+      'CentOS' => 'PyYaml',
+      'Debian' => 'python-yaml',
+    }
+
     # Log directory
     $logdir = $::operatingsystem ? {
         default => '/var/log/softwareautoinstall'

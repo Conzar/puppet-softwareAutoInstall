@@ -80,7 +80,7 @@ class softwareAutoInstall::common {
         command     => "bash -c 'cd /tmp && source variables.sh && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
         umask       => '022',
         environment => 'HOME=/home/sw',
-        require     => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'variables.sh' ], Package [ 'python-yaml' ] ],
+        require     => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'variables.sh' ], Package [ "${softwareautoinstall::params::PyYaml}" ] ],
       }
 
       file { 'install.py':
