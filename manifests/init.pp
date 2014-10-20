@@ -77,7 +77,7 @@ class softwareAutoInstall::common {
     if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
         user    => 'sw',
-        command => "bash -c 'cd /tmp && sh install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
+        command => "bash -c 'cd /tmp && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
         umask   => '022',
         require => [ File [ 'install.py' ], File [ 'softwares.yaml' ] ],
       }
