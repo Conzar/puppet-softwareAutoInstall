@@ -65,6 +65,11 @@ class softwareautoinstall::params {
     #     default => []
     # }
 
+    $path = $::operatingsystem ? { 
+      'CentOS'       => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/", "/usr/share/lmod/lmod/libexec/" ],
+      'Debian' => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
+    }
+
     # Log directory
     $logdir = $::operatingsystem ? {
         default => '/var/log/softwareautoinstall'

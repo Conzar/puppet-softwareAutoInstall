@@ -72,7 +72,7 @@ class softwareAutoInstall::common {
     # Load the variables used in this module. Check the softwareAutoInstall-params.pp file
     require softwareautoinstall::params
 
-    Exec { path => $easybuild::params::path }
+    Exec { path => $softwareautoinstall::params::path }
 
     if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
