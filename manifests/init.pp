@@ -72,7 +72,7 @@ class softwareAutoInstall::common {
     # Load the variables used in this module. Check the softwareAutoInstall-params.pp file
     require softwareautoinstall::params
 
-    Exec { path => $easybuild::params::path }
+    Exec { path => $softwareautoinstall::params::path }
 
     if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
@@ -87,7 +87,7 @@ class softwareAutoInstall::common {
         path   => '/tmp/install.py',
         owner  => 'sw',
         mode   => '0755',
-        source => 'puppet:///modules/softwareAutoInstall/install.py',
+        source => 'puppet:///modules/softwareautoinstall/install.py',
       }
 
       file { 'softwares.yaml':
@@ -95,7 +95,7 @@ class softwareAutoInstall::common {
         path   => '/tmp/softwares.yaml',
         owner  => 'sw',
         mode   => '0755',
-        source => 'puppet:///modules/softwareAutoInstall/softwares.yaml',
+        source => 'puppet:///modules/softwareautoinstall/softwares.yaml',
       }
     }
 }
