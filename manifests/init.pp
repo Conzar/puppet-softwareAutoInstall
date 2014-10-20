@@ -76,10 +76,11 @@ class softwareAutoInstall::common {
 
     if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
-        user    => 'sw',
-        command => "bash -c 'cd /tmp && source variables.sh && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
-        umask   => '022',
-        require => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'variables.sh' ], Package [ 'python-yaml' ] ],
+        user        => 'sw',
+        command     => "bash -c 'cd /tmp && source variables.sh && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
+        umask       => '022',
+        environment => 'HOME=/home/sw',
+        require     => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'variables.sh' ], Package [ 'python-yaml' ] ],
       }
 
       file { 'install.py':
