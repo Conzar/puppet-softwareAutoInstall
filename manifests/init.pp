@@ -68,7 +68,7 @@ inherits softwareAutoInstall::params
 #
 # Note: respect the Naming standard provided here[http://projects.puppetlabs.com/projects/puppet/wiki/Module_Standards]
 class softwareAutoInstall::common {
-
+    require easybuild
     # Load the variables used in this module. Check the softwareAutoInstall-params.pp file
     require softwareautoinstall::params
 
@@ -79,7 +79,7 @@ class softwareAutoInstall::common {
         user    => 'sw',
         command => "bash -c 'cd /tmp && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
         umask   => '022',
-        require => [ File [ 'install.py' ], File [ 'softwares.yaml' ] ],
+        require => [ File [ 'install.py' ], File [ 'softwares.yaml' ], Package [ 'python-yaml' ] ],
       }
 
       file { 'install.py':
@@ -96,6 +96,10 @@ class softwareAutoInstall::common {
         owner  => 'sw',
         mode   => '0755',
         source => 'puppet:///modules/softwareautoinstall/softwares.yaml',
+      }
+
+      pacakage { 'python-yaml':
+        ensure => installed,
       }
     }
 }
