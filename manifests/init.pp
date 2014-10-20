@@ -77,9 +77,9 @@ class softwareAutoInstall::common {
     if $softwareautoinstall::ensure == 'present' {
       exec { 'install':
         user    => 'sw',
-        command => "bash -c '. ${softwareautoinstall::params::moduleSource} && cd /tmp && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
+        command => "bash -c 'source /tmp/loadedvariables.sh && cd /tmp && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
         umask   => '022',
-        require => [ File [ 'install.py' ], File [ 'softwares.yaml' ], Package [ 'python-yaml' ] ],
+        require => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'loadedvariables.sh' ], Package [ 'python-yaml' ] ],
       }
 
       file { 'install.py':
@@ -96,6 +96,24 @@ class softwareAutoInstall::common {
         owner  => 'sw',
         mode   => '0755',
         source => 'puppet:///modules/softwareautoinstall/softwares.yaml',
+      }
+
+      file { 'loadedvariables.sh':
+        ensure  => present,
+        path    => '/tmp/loadedvariables.sh',
+        owner   => 'sw',
+        mode    => '0755',
+        source  => 'puppet:///modules/softwareautoinstall/variables.sh',
+        require => File [ 'variables.sh' ],
+      }
+
+      file { 'variables.sh':
+        replace => false,
+        ensure  => present,
+        path    => 'puppet:///modules/softwareautoinstall/variables.sh',
+        source  => '/etc/profile.d/easybuild.sh',
+        owner   => 'sw',
+        mode    => '0755',
       }
 
       package { 'python-yaml':
