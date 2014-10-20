@@ -66,8 +66,13 @@ class softwareautoinstall::params {
     # }
 
     $path = $::operatingsystem ? { 
-      'CentOS'       => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/", "/usr/share/lmod/lmod/libexec/" ],
+      'CentOS' => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/", "/usr/share/lmod/lmod/libexec/" ],
       'Debian' => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
+    }
+
+    $moduleSource = $::operatingsystem ? {
+      'CentOS' => '/usr/share/lmod/lmod/init/profile',
+      'Debian' => '/usr/share/?odules/init/bash',
     }
 
     # Log directory
