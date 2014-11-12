@@ -22,10 +22,11 @@ class { 'softwareAutoInstall':
   easybuildversion => EBversion,
   }
 ```
-Where yourBranch is a string containing the name of the branch you want to install (either "core" or "experimental").
+Where yourBranch is a string containing the name of the branch you want to install (either "core" or "experimental").  
+And EBversion the version of EasyBuild you want to use to install these softwares. (e.g: 1.15.1)
 
-Note: By default, the "core" set of software will be installed, so if you simply do:
-include softwareAutoInstall
+Note: By default, the "core" set of software will be installed and your default version of EasyBuild will be used, so if you simply do:  
+  `include softwareAutoInstall`  
 this is the set that will be installed.
 
 # Customize installation
