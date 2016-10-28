@@ -4,17 +4,19 @@
 # License::   Gpl-3.0
 #
 # ------------------------------------------------------------------------------
-# = Class: softwareAutoInstall
+# = Class: software_auto_install
 #
 # rtfm
 #
 # == Parameters:
 #
-# $ensure:: *Default*: 'present'. Ensure the presence (or absence) of softwareAutoInstall
+# $ensure::
+#  Ensure the presence (or absence) of software_auto_install
+#  *Default*: 'present'.
 #
 # == Actions:
 #
-# Install and configure softwareAutoInstall
+# Install and configure software_auto_install
 #
 # == Requires:
 #
@@ -22,12 +24,12 @@
 #
 # == Sample Usage:
 #
-#     import softwareAutoInstall
+#     import software_auto_install
 #
 # You can then specialize the various aspects of the configuration,
 # for instance:
 #
-#         class { 'softwareAutoInstall':
+#         class { 'software_auto_install':
 #             ensure => 'present'
 #         }
 #
@@ -39,95 +41,19 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-class softwareAutoInstall(
-    $ensure = $softwareautoinstall::params::ensure,
-    $branch = "core",
-    $easybuildversion = ""
-)
-inherits softwareAutoInstall::params
-{
-    info ("Configuring softwareAutoInstall (with ensure = ${ensure})")
+class software_auto_install(
+  $ensure            = $software_auto_install::params::ensure,
+  $softwares         = $software_auto_install::params::softwares,
+  $branch            = 'core',
+  $easybuild_version = ''
+) inherits software_auto_install::params {
+    info ("Configuring software_auto_install (with ensure = ${ensure})")
 
-    if ! ($ensure in [ 'present', 'absent' ]) {
-        fail("softwareAutoInstall 'ensure' parameter must be set to either 'absent' or 'present'")
-    }
+  if ! ($ensure in [ 'present', 'absent' ]) {
+    fail("software_auto_install 'ensure' parameter must be set to either\
+ 'absent' or 'present'")
+  }
 
-    case $::operatingsystem {
-        debian, ubuntu:         { include softwareAutoInstall::debian }
-        redhat, fedora, centos: { include softwareAutoInstall::redhat }
-        default: {
-            fail("Module $module_name is not supported on $operatingsystem")
-        }
-    }
+  class{'software_auto_install::common':}
+
 }
-
-# ------------------------------------------------------------------------------
-# = Class: softwareAutoInstall::common
-#
-# Base class to be inherited by the other softwareAutoInstall classes
-#
-# Note: respect the Naming standard provided here[http://projects.puppetlabs.com/projects/puppet/wiki/Module_Standards]
-class softwareAutoInstall::common {
-    require easybuild
-    # Load the variables used in this module. Check the softwareAutoInstall-params.pp file
-    require softwareautoinstall::params
-
-    Exec { path => $softwareautoinstall::params::path }
-
-    if $softwareautoinstall::ensure == 'present' {
-      exec { 'install':
-        user        => 'sw',
-        command     => "bash -c 'cd /tmp && source variables.sh && python install.py ${softwareautoinstall::branch} ${softwareautoinstall::easybuildversion} && rm -f install.py && rm -f softwares.yaml'",
-        umask       => '022',
-        environment => 'HOME=/home/sw',
-        require     => [ File [ 'install.py' ], File [ 'softwares.yaml' ], File [ 'variables.sh' ], Package [ "${softwareautoinstall::params::PyYaml}" ] ],
-      }
-
-      file { 'install.py':
-        ensure => present,
-        path   => '/tmp/install.py',
-        owner  => 'sw',
-        mode   => '0755',
-        source => 'puppet:///modules/softwareautoinstall/install.py',
-      }
-
-      file { 'softwares.yaml':
-        ensure => present,
-        path   => '/tmp/softwares.yaml',
-        owner  => 'sw',
-        mode   => '0755',
-        source => 'puppet:///modules/softwareautoinstall/softwares.yaml',
-      }
-
-      file { 'variables.sh':
-        ensure  => present,
-        path    => '/tmp/variables.sh',
-        owner   => 'sw',
-        mode    => '0755',
-        source  => [
-          'puppet:///modules/softwareautoinstall/variables.sh',
-          '/etc/profile.d/easybuild.sh'
-        ],
-      }
-
-      package { "${softwareautoinstall::params::PyYaml}":
-        ensure => installed,
-      }
-    }
-}
-
-
-# ------------------------------------------------------------------------------
-# = Class: softwareautoinstall::debian
-#
-# Specialization class for Debian systems
-class softwareautoinstall::debian inherits softwareautoinstall::common { }
-
-# ------------------------------------------------------------------------------
-# = Class: softwareAutoInstall::redhat
-#
-# Specialization class for Redhat systems
-class softwareautoinstall::redhat inherits softwareautoinstall::common { }
-
-
-

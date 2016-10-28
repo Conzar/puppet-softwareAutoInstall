@@ -4,10 +4,10 @@
 # License::   Gpl-3.0
 #
 # ------------------------------------------------------------------------------
-# = Class: softwareAutoInstall::params
+# = Class: software_auto_install::params
 #
 # In this class are defined as variables values that are used in other
-# softwareAutoInstall classes.
+# software_auto_install classes.
 # This class should be included, where necessary, and eventually be enhanced
 # with support for more OS
 #
@@ -22,145 +22,111 @@
 #
 # [Remember: No empty lines between comments and class definition]
 #
-class softwareautoinstall::params {
+class software_auto_install::params {
 
-    ######## DEFAULTS FOR VARIABLES USERS CAN SET ##########################
-    # (Here are set the defaults, provide your custom variables externally)
-    # (The default used is in the line with '')
-    ###########################################
+  ######## DEFAULTS FOR VARIABLES USERS CAN SET ##########################
+  # (Here are set the defaults, provide your custom variables externally)
+  # (The default used is in the line with '')
+  ###########################################
 
-    # ensure the presence (or absence) of softwareAutoInstall
-    $ensure = $softwareautoinstall_ensure ? {
-        ''      => 'present',
-        default => "${softwareautoinstall_ensure}"
-    }
+  # ensure the presence (or absence) of software_auto_install
+  $ensure = present
 
-    # The Protocol used. Used by monitor and firewall class. Default is 'tcp'
-    $protocol = $softwareautoinstall_protocol ? {
-        ''      => 'tcp',
-        default => "${softwareautoinstall_protocol}",
-    }
-    # The port number. Used by monitor and firewall class. The default is 22.
-    $port = $softwareautoinstall_port ? {
-        ''      => 22,
-        default => "${softwareautoinstall_port}",
-    }
-    # example of an array variable
-    $array_variable = $softwareautoinstall_array_variable ? {
-        ''      => [],
-        default => $softwareautoinstall_array_variable,
-    }
+  # The Protocol used. Used by monitor and firewall class. Default is 'tcp'
+  $protocl = 'tcp'
 
+  # The port number. Used by monitor and firewall class. The default is 22.
+  $port = '22'
 
-    #### MODULE INTERNAL VARIABLES  #########
-    # (Modify to adapt to unsupported OSes)
-    #######################################
-    # softwareAutoInstall packages
-    $packagename = $::operatingsystem ? {
-        default => 'softwareautoinstall',
-    }
-    # $extra_packages = $::operatingsystem ? {
-    #     /(?i-mx:ubuntu|debian)/        => [],
-    #     /(?i-mx:centos|fedora|redhat)/ => [],
-    #     default => []
-    # }
+  # example of an array variable
+  $array_variable = []
 
-    $path = $::operatingsystem ? { 
-      'CentOS' => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/", "/usr/share/lmod/lmod/libexec/" ],
-      'Debian' => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
-    }
+  #### MODULE INTERNAL VARIABLES  #########
+  # (Modify to adapt to unsupported OSes)
+  #######################################
+  # software_auto_install packages
+  $packagename = $::osfamily ? {
+      default => 'software_auto_install',
+  }
 
-    $moduleSource = $::operatingsystem ? {
-      'CentOS' => '/usr/share/lmod/lmod/init/profile',
-      'Debian' => '/usr/share/?odules/init/bash',
-    }
+  $path = $::osfamily ? {
+    'redhat' => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/',
+    '/usr/share/lmod/lmod/libexec/' ],
+    'debian' => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ],
+  }
 
-    $PyYaml = $::operatingsystem ? {
-      'CentOS' => 'PyYAML',
-      'Debian' => 'python-yaml',
-    }
+  $moduleSource = $::osfamily ? {
+    'redhat' => '/usr/share/lmod/lmod/init/profile',
+    'debian' => '/usr/share/?odules/init/bash',
+  }
 
-    # Log directory
-    $logdir = $::operatingsystem ? {
-        default => '/var/log/softwareautoinstall'
-    }
-    $logdir_mode = $::operatingsystem ? {
-        default => '750',
-    }
-    $logdir_owner = $::operatingsystem ? {
-        default => 'root',
-    }
-    $logdir_group = $::operatingsystem ? {
-        default => 'adm',
-    }
+  $py_yaml = $::osfamily ? {
+    'redhat' => 'PyYAML',
+    'debian' => 'python-yaml',
+  }
 
-    # PID for daemons
-    # $piddir = $::operatingsystem ? {
-    #     default => "/var/run/softwareAutoInstall",
-    # }
-    # $piddir_mode = $::operatingsystem ? {
-    #     default => '750',
-    # }
-    # $piddir_owner = $::operatingsystem ? {
-    #     default => 'softwareAutoInstall',
-    # }
-    # $piddir_group = $::operatingsystem ? {
-    #     default => 'adm',
-    # }
-    # $pidfile = $::operatingsystem ? {
-    #     default => '/var/run/softwareAutoInstall/softwareAutoInstall.pid'
-    # }
+  # Log directory
+  $logdir = $::osfamily ? {
+      default => '/var/log/software_auto_install'
+  }
+  $logdir_mode = $::osfamily ? {
+      default => '750',
+  }
+  $logdir_owner = $::osfamily ? {
+      default => 'root',
+  }
+  $logdir_group = $::osfamily ? {
+      default => 'adm',
+  }
 
-    # softwareAutoInstall associated services
-    $servicename = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'softwareautoinstall',
-        default                 => 'softwareautoinstall'
-    }
-    # used for pattern in a service ressource
-    $processname = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => 'softwareautoinstall',
-        default                 => 'softwareautoinstall'
-    }
-    $hasstatus = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/        => false,
-        /(?i-mx:centos|fedora|redhat)/ => true,
-        default => true,
-    }
-    $hasrestart = $::operatingsystem ? {
-        default => true,
-    }
+  # software_auto_install associated services
+  $servicename = $::osfamily ? {
+      'debian' => 'software_auto_install',
+      default  => 'software_auto_install'
+  }
+  # used for pattern in a service ressource
+  $processname = $::osfamily ? {
+      'debian' => 'software_auto_install',
+      default  => 'software_auto_install'
+  }
+  $hasstatus = $::osfamily ? {
+      'debian' => false,
+      'redhat' => true,
+      default  => true,
+  }
+  $hasrestart = $::osfamily ? {
+      default => true,
+  }
 
-    # Configuration directory & file
-    # $configdir = $::operatingsystem ? {
-    #     default => "/etc/softwareAutoInstall",
-    # }
-    # $configdir_mode = $::operatingsystem ? {
-    #     default => '0755',
-    # }
-    # $configdir_owner = $::operatingsystem ? {
-    #     default => 'root',
-    # }
-    # $configdir_group = $::operatingsystem ? {
-    #     default => 'root',
-    # }
+  $configfile = $::osfamily ? {
+      default => '/etc/software_auto_install.conf',
+  }
+  $configfile_init = $::osfamily ? {
+      'debian' => '/etc/default/software_auto_install',
+      default  => '/etc/sysconfig/software_auto_install'
+  }
+  $configfile_mode = $::osfamily ? {
+      default => '0600',
+  }
+  $configfile_owner = $::osfamily ? {
+      default => 'root',
+  }
+  $configfile_group = $::osfamily ? {
+      default => 'root',
+  }
 
-    $configfile = $::operatingsystem ? {
-        default => '/etc/softwareautoinstall.conf',
-    }
-    $configfile_init = $::operatingsystem ? {
-        /(?i-mx:ubuntu|debian)/ => '/etc/default/softwareautoinstall',
-        default                 => '/etc/sysconfig/softwareautoinstall'
-    }
-    $configfile_mode = $::operatingsystem ? {
-        default => '0600',
-    }
-    $configfile_owner = $::operatingsystem ? {
-        default => 'root',
-    }
-    $configfile_group = $::operatingsystem ? {
-        default => 'root',
-    }
+  $install_dir = '/opt/easybuild'
+  $python_path = '/usr/bin/python'
+  $softwares   = {
+    'core'         => ['GCC-4.8.1.eb', 'GCC-4.9.1.eb'],
+    'experimental' => ['GCC-4.8.2.eb'],
+  }
 
-
+  case $::osfamily {
+    'debian':  { }
+    'redhat':  { }
+    default: {
+      fail("Module ${::module_name} is not supported on ${::osfamily}")
+    }
+  }
 }
-
